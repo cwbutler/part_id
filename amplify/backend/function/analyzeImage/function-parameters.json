@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "storage": {
+      "PartIDStorage": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

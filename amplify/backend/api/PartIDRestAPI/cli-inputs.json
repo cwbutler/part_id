@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/anaylzeImage/{image}": {
+      "name": "/anaylzeImage/{image}",
+      "lambdaFunction": "analyzeImage",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
