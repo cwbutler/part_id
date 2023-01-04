@@ -14,7 +14,7 @@ class PartIDAppLanding extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void navigateAway(Route route) {
-      Navigator.push(context, route);
+      Navigator.pushAndRemoveUntil(context, route, (route) => false);
     }
 
     Future<StreamSubscription<HubEvent>> init() async {
@@ -38,10 +38,14 @@ class PartIDAppLanding extends HookConsumerWidget {
             MaterialPageRoute(builder: (context) => const PartIDHome());
             break;
           case 'SIGNED_OUT':
-            safePrint('USER IS SIGNED OUT');
+            debugPrint('USER IS SIGNED OUT');
+            navigateAway(
+              MaterialPageRoute(builder: (context) => const PartIDWelcome()),
+            );
             break;
           case 'SESSION_EXPIRED':
-            safePrint('SESSION HAS EXPIRED');
+            debugPrint('SESSION HAS EXPIRED');
+            AppUtils.signOutCurrentUser();
             break;
           case 'USER_DELETED':
             safePrint('USER HAS BEEN DELETED');

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -25,7 +27,8 @@ class AppUtils {
     if (Amplify.isConfigured) return;
     // Add Amplify plugins
     final authPlugin = AmplifyAuthCognito();
-    await Amplify.addPlugins([authPlugin]);
+    final storagePlugin = AmplifyStorageS3();
+    await Amplify.addPlugins([authPlugin, storagePlugin]);
 
     // Once Plugins are added, configure Amplify
     // Note: Amplify can only be configured once.
@@ -107,6 +110,30 @@ class AppUtils {
       return result;
     } on AuthException catch (e) {
       debugPrint(e.message);
+    }
+    return null;
+  }
+
+  static Future<String?> uploadFileToS3({
+    required File file,
+    required String key,
+    S3UploadFileOptions? options,
+  }) async {
+    // Upload the file to S3
+    try {
+      final UploadFileResult result = await Amplify.Storage.uploadFile(
+          local: file,
+          key: key,
+          options: options,
+          onProgress: (progress) {
+            debugPrint(
+              'Fraction of file upload completed: ${progress.getFractionCompleted()}',
+            );
+          });
+      debugPrint('Successfully uploaded file: ${result.key}');
+      return "public/${result.key}";
+    } on StorageException catch (e) {
+      debugPrint('Error uploading file: $e');
     }
     return null;
   }

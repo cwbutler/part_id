@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:part_id/components/SettingsDropdown.dart';
 import 'package:part_id/models/app.dart';
 import 'package:part_id/screens/AnalyzeImage.dart';
@@ -10,10 +14,12 @@ class PartIDHome extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void navigateAway() {
+    void navigateAway(XFile? image) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const PartIDAnalyzeImage()),
+        MaterialPageRoute(
+          builder: (context) => PartIDAnalyzeImage(image: image),
+        ),
       );
     }
 
@@ -59,7 +65,7 @@ class PartIDHome extends HookConsumerWidget {
                               onPressed: () async {
                                 final image = await AppUtils.pickImage();
                                 if (image != null) {
-                                  navigateAway();
+                                  navigateAway(image);
                                 }
                               },
                               child: const Text("Upload an image"),
