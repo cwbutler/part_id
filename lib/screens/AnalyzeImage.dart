@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:part_id/models/AirtableProduct.dart';
 import 'package:part_id/models/app.dart';
 
 class PartIDAnalyzeImage extends HookConsumerWidget {
@@ -13,17 +14,19 @@ class PartIDAnalyzeImage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void navigateToProduct(PartIDAirtableProduct product) {}
+
     void init() async {
       if (image != null) {
         final expires = DateTime(DateTime.now().day + 1);
         final key = await AppUtils.uploadFileToS3(
           file: File(image!.path),
           key: "temp/${image!.name}",
-          options: S3UploadFileOptions(metadata: {
-            "Expires": "${expires.year}-${expires.month}-${expires.day}"
-          }),
         );
-        debugPrint(key);
+        if (key != null) {
+          final product = await AppUtils.analyzeImage(key);
+          if (product != null) navigateToProduct(product);
+        }
       }
     }
 

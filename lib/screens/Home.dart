@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:part_id/components/SettingsDropdown.dart';
 import 'package:part_id/models/app.dart';
 import 'package:part_id/screens/AnalyzeImage.dart';
+import 'package:part_id/screens/Camera.dart';
+import 'package:part_id/screens/Welcome.dart';
 
 class PartIDHome extends HookConsumerWidget {
   const PartIDHome({super.key});
@@ -19,6 +21,15 @@ class PartIDHome extends HookConsumerWidget {
         context,
         MaterialPageRoute(
           builder: (context) => PartIDAnalyzeImage(image: image),
+        ),
+      );
+    }
+
+    void navigateToLogout() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const PartIDWelcome(),
         ),
       );
     }
@@ -71,7 +82,14 @@ class PartIDHome extends HookConsumerWidget {
                               child: const Text("Upload an image"),
                             ),
                             CupertinoActionSheetAction(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (route) => const PartIDCamera(),
+                                  ),
+                                );
+                              },
                               child: const Text("Take a photo"),
                             ),
                           ],
@@ -91,6 +109,7 @@ class PartIDHome extends HookConsumerWidget {
           TextButton(
             onPressed: () {
               AppUtils.signOutCurrentUser();
+              navigateToLogout();
             },
             child: const Text(
               "Logout",

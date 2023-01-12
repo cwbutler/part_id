@@ -1,8 +1,8 @@
 {
   "version": 1,
   "paths": {
-    "/anaylzeImage/{image}": {
-      "name": "/anaylzeImage/{image}",
+    "/analyzeImage": {
+      "name": "/analyzeImage",
       "lambdaFunction": "analyzeImage",
       "permissions": {
         "setting": "open"

@@ -19,6 +19,12 @@
     "storagePartIDStorageBucketName": {
       "Type": "String",
       "Default": "storagePartIDStorageBucketName"
+    },
+    "airtableApiKey": {
+      "Type": "String"
+    },
+    "airtableBaseId": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -76,6 +82,12 @@
             },
             "STORAGE_PARTIDSTORAGE_BUCKETNAME": {
               "Ref": "storagePartIDStorageBucketName"
+            },
+            "AIRTABLE_API_KEY": {
+              "Ref": "airtableApiKey"
+            },
+            "AIRTABLE_BASE_ID": {
+              "Ref": "airtableBaseId"
             }
           }
         },

@@ -25,7 +25,7 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "api": {
-        "PartIDRestAPI": {
+        "PartIDAPI": {
             "RootUrl": "string",
             "ApiName": "string",
             "ApiId": "string"

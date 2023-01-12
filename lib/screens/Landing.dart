@@ -48,7 +48,10 @@ class PartIDAppLanding extends HookConsumerWidget {
             AppUtils.signOutCurrentUser();
             break;
           case 'USER_DELETED':
-            safePrint('USER HAS BEEN DELETED');
+            debugPrint('USER HAS BEEN DELETED');
+            navigateAway(
+              MaterialPageRoute(builder: (context) => const PartIDWelcome()),
+            );
             break;
         }
       });

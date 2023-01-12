@@ -51,7 +51,7 @@
     }
   },
   "api": {
-    "PartIDRestAPI": {
+    "PartIDAPI": {
       "service": "API Gateway",
       "providerPlugin": "awscloudformation",
       "dependsOn": [

@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:part_id/models/AirtableProduct.dart';
 import '../amplifyconfiguration.dart';
 
 class AppUtils {
@@ -28,7 +31,8 @@ class AppUtils {
     // Add Amplify plugins
     final authPlugin = AmplifyAuthCognito();
     final storagePlugin = AmplifyStorageS3();
-    await Amplify.addPlugins([authPlugin, storagePlugin]);
+    final api = AmplifyAPI();
+    await Amplify.addPlugins([authPlugin, storagePlugin, api]);
 
     // Once Plugins are added, configure Amplify
     // Note: Amplify can only be configured once.
@@ -36,7 +40,8 @@ class AppUtils {
       await Amplify.configure(amplifyconfig);
     } on AmplifyAlreadyConfiguredException {
       debugPrint(
-          "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+        "Tried to reconfigure Amplify; this can occur when your app restarts on Android.",
+      );
     }
   }
 
@@ -134,6 +139,24 @@ class AppUtils {
       return "public/${result.key}";
     } on StorageException catch (e) {
       debugPrint('Error uploading file: $e');
+    }
+    return null;
+  }
+
+  static Future<PartIDAirtableProduct?> analyzeImage(String imageKey) async {
+    try {
+      final options = RestOptions(
+        path: '/analyzeImage',
+        queryParameters: {"image": imageKey},
+        apiName: "PartIDAPI",
+      );
+      final restOperation = Amplify.API.get(restOptions: options);
+      final response = await restOperation.response;
+      debugPrint('GET call succeeded: ${response.body}');
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return PartIDAirtableProduct.fromMap(data);
+    } on ApiException catch (e) {
+      debugPrint('GET call failed: $e');
     }
     return null;
   }

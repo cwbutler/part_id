@@ -9,7 +9,8 @@
       "UnauthRoleName": "amplify-partid-staging-185226-unauthRole",
       "StackName": "amplify-partid-staging-185226",
       "StackId": "arn:aws:cloudformation:us-east-2:412989811674:stack/amplify-partid-staging-185226/c4086340-8b97-11ed-b0b0-06308bfe0356",
-      "AmplifyAppId": "d7mn7eqmsang4"
+      "AmplifyAppId": "d7mn7eqmsang4",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-partid-staging-185226-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -21,11 +22,13 @@
       "function": {
         "analyzeImage": {
           "deploymentBucketName": "amplify-partid-staging-185226-deployment",
-          "s3Key": "amplify-builds/analyzeImage-7746766a664d2b313763-build.zip"
+          "s3Key": "amplify-builds/analyzeImage-534e6371756c7262547a-build.zip",
+          "airtableApiKey": "keygh9rYVmOMPYc35",
+          "airtableBaseId": "appgMd5mOd5tv9GV4"
         }
       },
       "api": {
-        "PartIDRestAPI": {}
+        "PartIDAPI": {}
       }
     }
   }

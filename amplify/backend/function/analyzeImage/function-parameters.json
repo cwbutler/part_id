@@ -6,5 +6,15 @@
       ]
     }
   },
-  "lambdaLayers": []
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "airtableApiKey",
+      "environmentVariableName": "AIRTABLE_API_KEY"
+    },
+    {
+      "cloudFormationParameterName": "airtableBaseId",
+      "environmentVariableName": "AIRTABLE_BASE_ID"
+    }
+  ]
 }
