@@ -15,6 +15,39 @@ class PartIDAnalyzeImage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void navigateToProduct(PartIDAirtableProduct product) {}
+    void showAlertModal() {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actionsAlignment: MainAxisAlignment.center,
+          title: const Text(
+            "No part found",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+          ),
+          content: const Text(
+            "We were unable to locate this particular part. Try another image.",
+            style: TextStyle(fontSize: 13),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: const Text(
+                "Okay",
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Color(0xFF007AFF),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
 
     void init() async {
       if (image != null) {
@@ -25,8 +58,12 @@ class PartIDAnalyzeImage extends HookConsumerWidget {
         );
         if (key != null) {
           final product = await AppUtils.analyzeImage(key);
-          if (product != null) navigateToProduct(product);
+          if (product != null) {
+            navigateToProduct(product);
+            return;
+          }
         }
+        showAlertModal();
       }
     }
 
