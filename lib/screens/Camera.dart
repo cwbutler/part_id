@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,6 +15,7 @@ class PartIDCamera extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isInitialized = useState(false);
     final hasImage = useState(false);
+    final previewImage = useState<XFile?>(null);
 
     void navigateAway(XFile? image) {
       Navigator.push(
@@ -67,6 +69,7 @@ class PartIDCamera extends HookConsumerWidget {
                           // Attempt to take a picture and then get the location where the image file is saved.
                           final image = await controller.takePicture();
                           hasImage.value = true;
+                          previewImage.value = image;
                         } catch (e) {
                           // If an error occurs, log the error to the console.
                           debugPrint(e.toString());
@@ -102,7 +105,9 @@ class PartIDCamera extends HookConsumerWidget {
                     height: 60,
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (await image.length() > 0) navigateAway(image);
+                        if (previewImage.value != null) {
+                          navigateAway(previewImage.value!);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xffA8DBA8),
@@ -119,6 +124,7 @@ class PartIDCamera extends HookConsumerWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         hasImage.value = false;
+                        previewImage.value = null;
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -132,9 +138,15 @@ class PartIDCamera extends HookConsumerWidget {
                 ],
               ),
       ),
-      body: (isInitialized.value)
-          ? Container()
-          : const Center(child: CircularProgressIndicator()),
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: (hasImage.value && previewImage.value != null)
+            ? Image.file(File(previewImage.value!.path))
+            : (isInitialized.value)
+                ? CameraPreview(controller)
+                : const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
