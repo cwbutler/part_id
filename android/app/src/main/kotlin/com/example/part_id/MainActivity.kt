@@ -1,4 +1,4 @@
-package com.example.part_id
+package com.cb.partid
 
 import io.flutter.embedding.android.FlutterActivity
 
