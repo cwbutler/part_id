@@ -5,17 +5,16 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:part_id/screens/AnalyzeImage.dart';
 
-late CameraController controller;
-late XFile image;
-
 class PartIDCamera extends HookConsumerWidget {
   const PartIDCamera({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isInitialized = useState(false);
     final hasImage = useState(false);
     final previewImage = useState<XFile?>(null);
+    final controller = useState<CameraController?>(null);
+    final isInitialized = useState(false);
+    final useFlash = useState(false);
 
     void navigateAway(XFile? image) {
       Navigator.push(
@@ -33,14 +32,15 @@ class PartIDCamera extends HookConsumerWidget {
       // Obtain a list of the available cameras on the device.
       final cameras = await availableCameras();
       // To display the current output from the Camera, create a CameraController.
-      controller = CameraController(cameras[0], ResolutionPreset.medium);
-      await controller.initialize();
+      controller.value =
+          CameraController(cameras.first, ResolutionPreset.medium);
+      await controller.value!.initialize();
       isInitialized.value = true;
     }
 
     useEffect(() {
       init();
-      return () => controller.dispose();
+      return () => controller.value?.dispose();
     }, []);
 
     return Scaffold(
@@ -67,7 +67,7 @@ class PartIDCamera extends HookConsumerWidget {
                         // catch the error.
                         try {
                           // Attempt to take a picture and then get the location where the image file is saved.
-                          final image = await controller.takePicture();
+                          final image = await controller.value!.takePicture();
                           hasImage.value = true;
                           previewImage.value = image;
                         } catch (e) {
@@ -87,6 +87,11 @@ class PartIDCamera extends HookConsumerWidget {
                     child: Container(
                       margin: const EdgeInsets.only(left: 210),
                       child: GestureDetector(
+                        onTap: () {
+                          controller.value!.setFlashMode((useFlash.value)
+                              ? FlashMode.off
+                              : FlashMode.torch);
+                        },
                         child: Image.asset(
                           "assets/images/flash_button.png",
                           width: 48,
@@ -97,8 +102,9 @@ class PartIDCamera extends HookConsumerWidget {
                   ),
                 ],
               )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+            : Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                runAlignment: WrapAlignment.spaceEvenly,
                 children: [
                   SizedBox(
                     width: 320,
@@ -107,6 +113,8 @@ class PartIDCamera extends HookConsumerWidget {
                       onPressed: () async {
                         if (previewImage.value != null) {
                           navigateAway(previewImage.value!);
+                          hasImage.value = false;
+                          previewImage.value = null;
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -144,7 +152,7 @@ class PartIDCamera extends HookConsumerWidget {
         child: (hasImage.value && previewImage.value != null)
             ? Image.file(File(previewImage.value!.path))
             : (isInitialized.value)
-                ? CameraPreview(controller)
+                ? CameraPreview(controller.value!)
                 : const Center(child: CircularProgressIndicator()),
       ),
     );

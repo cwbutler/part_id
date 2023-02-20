@@ -153,8 +153,12 @@ class AppUtils {
       final restOperation = Amplify.API.get(restOptions: options);
       final response = await restOperation.response;
       debugPrint('GET call succeeded: ${response.body}');
-      final Map<String, dynamic> data = jsonDecode(response.body);
-      return PartIDAirtableProduct.fromMap(data);
+      if (response.body != "null") {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        return PartIDAirtableProduct.fromMap(data);
+      } else {
+        return null;
+      }
     } on ApiException catch (e) {
       debugPrint('GET call failed: $e');
     }

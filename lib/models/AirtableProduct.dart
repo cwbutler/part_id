@@ -50,11 +50,17 @@ class PartIDAirtableProduct {
 
   static PartIDAirtableProduct fromMap(Map<String, dynamic> data) {
     return PartIDAirtableProduct(
-      airtableId: data["Airtable ID"],
-      partNumber: data["Part Number"],
-      partName: data["Part Name"],
-      make: data["Make"],
-      description: data["Description"],
+      airtableId: data["info"]["Airtable ID"],
+      partNumber: data["info"]["Part Number"],
+      partName: data["info"]["Part Name"],
+      description: data["info"]["Description"],
+      fitsModel: data["info"]["Fits Model"],
+      aSideCapturedImage1: data["info"]["A-side Captured Image 1"],
+      aSideCapturedImage2: data["info"]["A-side Captured Image 2"],
+      aSideCapturedImage3: data["info"]["A-side Captured Image 3"],
+      bSideCapturedImage1: data["info"]["B-side Captured Image 1"],
+      bSideCapturedImage2: data["info"]["B-side Captured Image 2"],
+      bSideCapturedImage3: data["info"]["B-side Captured Image 3"],
     );
   }
 }

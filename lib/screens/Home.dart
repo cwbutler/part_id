@@ -42,8 +42,8 @@ class PartIDHome extends HookConsumerWidget {
           horizontal: 60,
         ),
         child: Column(children: [
-          Row(
-            children: const [
+          const Row(
+            children: [
               Text(
                 "PartID",
                 style: TextStyle(
@@ -60,7 +60,10 @@ class PartIDHome extends HookConsumerWidget {
               child: Container(
                 margin: const EdgeInsets.only(bottom: 40),
                 width: 640,
-                child: Row(
+                child: Wrap(
+                  alignment: WrapAlignment.spaceEvenly,
+                  runAlignment: WrapAlignment.spaceEvenly,
+                  runSpacing: 20.0,
                   children: [
                     GestureDetector(
                       onTap: () => showCupertinoModalPopup(
@@ -97,10 +100,9 @@ class PartIDHome extends HookConsumerWidget {
                       ),
                       child: Image.asset('assets/images/scan_parts.png'),
                     ),
-                    const Spacer(),
                     GestureDetector(
                       child: Image.asset('assets/images/view_dash.png'),
-                    )
+                    ),
                   ],
                 ),
               ),

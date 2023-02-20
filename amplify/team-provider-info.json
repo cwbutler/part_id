@@ -22,7 +22,7 @@
       "function": {
         "analyzeImage": {
           "deploymentBucketName": "amplify-partid-staging-185226-deployment",
-          "s3Key": "amplify-builds/analyzeImage-534e6371756c7262547a-build.zip",
+          "s3Key": "amplify-builds/analyzeImage-656d314342626c754941-build.zip",
           "airtableApiKey": "keygh9rYVmOMPYc35",
           "airtableBaseId": "appgMd5mOd5tv9GV4"
         }

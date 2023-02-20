@@ -25,7 +25,7 @@ def handler(event, _):
       return {
         'statusCode': 200,
         'headers': headers,
-        'body': json.dumps(partInfo)
+        'body': json.dumps({ "label": label, "info": partInfo })
       }
     else:
       return {

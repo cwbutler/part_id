@@ -1,12 +1,11 @@
 import 'dart:io';
-
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:part_id/models/AirtableProduct.dart';
 import 'package:part_id/models/app.dart';
+import 'package:part_id/screens/ViewProduct.dart';
 
 class PartIDAnalyzeImage extends HookConsumerWidget {
   final XFile? image;
@@ -14,7 +13,15 @@ class PartIDAnalyzeImage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void navigateToProduct(PartIDAirtableProduct product) {}
+    void navigateToProduct(PartIDAirtableProduct product) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PartIDViewProduct(product: product),
+        ),
+      );
+    }
+
     void showAlertModal() {
       showDialog(
         context: context,
